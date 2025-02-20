@@ -468,11 +468,6 @@ Analyzing the raster map for Universal Kriging with the exponential semivariogra
 
 Performing co-kriging using `gstat` package and **Ordinary Kriging**:
 
-```{r, echo=FALSE}
-var_fit1_exp <- fit.variogram(variogram(g_unemployment1), vgm(0.05,"Exp",0.5,0), 
-                          fit.method=1)
-```
-
 ```{r}
 data_cokrig <- data %>%
   select(longitude, latitude, Unemployment_rate_2021,
