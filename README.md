@@ -466,7 +466,7 @@ filled.contour(seq(from=x.range[1],to=x.range[2],by=0.1),
 
 Analyzing the raster map for Universal Kriging with the exponential semivariogram, we can see that there are two primary areas with an extreme unemployment rate: Central California and the border with Mexico. However, unlike with our Ordinary Kriging raster map, this does not fully encapsulate the region, and we do not believe it is as accurate as the Ordinary model. Thus, we will implement our Co-Kriging model using the Ordinary Kriging. This difference may also be due to the fact that we are using the `geoR` package.
 
-### 6.1 Co-Kriging (`gstat`)
+### 5.3 Co-Kriging (`gstat`)
 
 Performing co-kriging using `gstat` package and **Ordinary Kriging**:
 
@@ -512,7 +512,7 @@ For our Co-Kriging model, we have decided to implement the following predictors 
 
 Having selected these four predictors, we seek to construct a predictive model that best represents the unemployment rate throughout California counties. We believe that this model will be the most accurate, as we incorporate more factors to boost our prediction.
 
-#### 6.1.1 Raster Map using the Predicted Values
+#### 5.3.1 Raster Map using the Predicted Values
 
 ```{r, fig.height=5, fig.width=8, out.height="70%", out.width="70%"}
 par(mfrow=c(1,2))
@@ -550,15 +550,15 @@ Comparing the three Kriging models—ordinary, universal, and co-kriging—we ca
 
 Therefore, we believe that co-kriging is the best predictive model, with ordinary and universal kriging as the second and third best models. We will utilize cross-validation in order to enumerate their accuracy.
 
-## 7 Kriging Cross-Validation
+## 6 Kriging Cross-Validation
 
 For our final section, we compute the sample variogram and fit the spherical and exponential variograms to it. While we exclusively utilize the exponential variogram in the previous section, we will compute all kriging PRESS values for both to validate our assumption. Then, using leave one out cross-validation (`krige.cv`), we predict the points and compare the prediction sum of squares (PRESS) for each variogram. 
 
-### 7.1 PRESS Calculations for Kriging using Spherical Variogram
+### 6.1 PRESS Calculations for Kriging using Spherical Variogram
 
 We first focus on computing the cross-validation metrics for the following Kriging models: Ordinary, Universal, and Co-Kriging. We will use the `gstat` package and leave-one-out cross-validation (`krige.cv`).  
 
-#### 7.1.1 Ordinary Kriging PRESS for Spherical
+#### 6.1.1 Ordinary Kriging PRESS for Spherical
 ```{r}
 pr_ok <- krige.cv(Unemployment_rate_2021~1, data=data_logunemployment,
                locations=~x+y, model=var_fit1, nfold = nrow(data_logunemployment)) 
@@ -568,7 +568,7 @@ PRESS_ok <- sum(pr_ok$residual^2) / nrow(data_logunemployment)
 The PRESS for ordinary kriging is: 0.04684231
 
 
-#### 7.1.2 Universal Kriging PRESS for Spherical
+#### 6.1.2 Universal Kriging PRESS for Spherical
 ```{r}
 pr_uk <- krige.cv(Unemployment_rate_2021~x+y, data=data_logunemployment,
                locations=~x+y, model=var_fit1, nfold = nrow(data_logunemployment)) 
@@ -578,7 +578,7 @@ PRESS_uk <- sum(pr_uk$residual^2) / nrow(data_logunemployment)
 The PRESS for universal kriging is: 0.04780679
 
 
-#### 7.1.3 Co-Kriging PRESS for Spherical
+#### 6.1.3 Co-Kriging PRESS for Spherical
 ```{r, message=FALSE,include=FALSE}
 var_fit1 <- fit.variogram(variogram(g_unemployment1),vgm(0.045,"Sph",0.4,0),fit.method=1)
 vm <- variogram(g1) 
@@ -602,11 +602,11 @@ Because it has the lowest PRESS value, we would recommend choosing the co-krigin
 
 
 
-### 7.2 PRESS Calculations for Kriging using Exponential Variogram
+### 6.2 PRESS Calculations for Kriging using Exponential Variogram
 
 Having caluclated the PRESS for Kriging using the spherical variogram, we compute the cross-validation metrics for the following Kriging models using the exponential variogram: Ordinary, Universal, and Co-Kriging. We expect these values to be lower.   
 
-#### 7.2.1 Ordinary Kriging PRESS for Exponential
+#### 6.2.1 Ordinary Kriging PRESS for Exponential
 ```{r}
 #Compute PRESS for universal kriging with the exponential semivariogram
 pr_ok_exp <- krige.cv(Unemployment_rate_2021~1, data=data_logunemployment,
@@ -616,7 +616,7 @@ PRESS_ok_exp <- sum(pr_ok_exp$residual^2) / nrow(data_logunemployment)
 
 The PRESS for ordinary kriging is: 0.04654859
 
-#### 7.2.2 Universal Kriging PRESS for Exponential
+#### 6.2.2 Universal Kriging PRESS for Exponential
 ```{r}
 pr_uk_exp <- krige.cv(Unemployment_rate_2021~x+y, data=data_logunemployment,
                locations=~x+y, model=var_fit1_exp, nfold = nrow(data_logunemployment)) 
@@ -625,7 +625,7 @@ PRESS_uk_exp <- sum(pr_uk_exp$residual^2) / nrow(data_logunemployment)
 
 The PRESS for universal kriging is: 0.04709442
 
-#### 7.2.3 Co-Kriging PRESS for Exponential
+#### 6.2.3 Co-Kriging PRESS for Exponential
 ```{r, message=FALSE,include=FALSE}
 var_fit1_exp <- fit.variogram(variogram(g_unemployment1),vgm(0.045,"Exp",0.5,0),fit.method=1)
 vm <- variogram(g1) 
