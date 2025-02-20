@@ -1,4 +1,4 @@
-# STATS C173 Geostatistics Final Project
+# STATS C173 Final Project
 
 ## Geo-Spatial Analysis of County-Level Unemployment Rates and Socio-Economic Factors in California
 
