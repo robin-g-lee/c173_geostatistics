@@ -1,6 +1,4 @@
-# STATS C173 Final Project
-
-## Geo-Spatial Analysis of County-Level Unemployment Rates and Socio-Economic Factors in California
+# Geo-Spatial Analysis of County-Level Unemployment Rates and Socio-Economic Factors in California
 
 **Author:** *Robin Lee*
 
